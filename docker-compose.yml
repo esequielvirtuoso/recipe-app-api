@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+    app: # service name
+        build: 
+            context: .
+        ports: # mapping ports between host and container
+            - "8000:8000" # "host_port:container_port"
+        volumes:
+            - ./app:/app
+        command: >
+            sh -c "python manage.py runserver 0.0.0.0:8000"
