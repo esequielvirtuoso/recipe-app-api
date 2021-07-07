@@ -1,7 +1,5 @@
 version: "3"
-# networks:
-    # my-network-name:
-    #     name: ${NETWORK_NAME}
+
 services:
     app: # service name
         build:
