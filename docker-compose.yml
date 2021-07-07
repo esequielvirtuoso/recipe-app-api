@@ -21,14 +21,9 @@ services:
             - DB_PASS=secretPassword
         depends_on:
             - db
-        # networks:
-        #     - my-network-name
     db:
         image: postgres:10-alpine
-        # container_name: ${POSTGRES_NAME}
         environment:
             - POSTGRES_DB=app
             - POSTGRES_USER=postgres
             - POSTGRES_PASSWORD=secretPassword
-        # networks:
-        #     - my-network-name
