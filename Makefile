@@ -21,10 +21,13 @@ lint:
 	docker-compose run app sh -c "flake8"
 
 test:
-	docker-compose run app sh -c "python manage.py test"
+	docker-compose run --rm app sh -c "python manage.py test"
 
-start_core:
+create_core_app:
 	docker-compose run app sh -c "python manage.py startapp core"
 
 start_core_objects_migration:
 	docker-compose run app sh -c "python manage.py makemigrations core"
+
+create_user_app:
+	docker-compose run --rm app sh -c "python manage.py startapp user"
