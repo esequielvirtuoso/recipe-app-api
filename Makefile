@@ -1,5 +1,6 @@
 include help.mk
 
+# environment variables
 POSTGRES_NAME = postgres_recipe
 NETWORK_NAME  = network_recipe
 APP_NAME = recipe_app_api
