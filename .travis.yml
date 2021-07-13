@@ -11,4 +11,4 @@ before_install:
 before_script: pip install docker-compose
 
 script:
-    - docker-compose run app sh -c "python manage.py wait_for_db && python manage.py test && flake8"
+    - docker-compose run app -e POSTGRES_NAME=postgres_recipe -e NETWORK_NAME=$network_recipe -e APP_NAME=recipe_app_api sh -c "python manage.py wait_for_db && python manage.py test && flake8"
