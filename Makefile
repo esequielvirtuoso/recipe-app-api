@@ -17,7 +17,7 @@ build:
 env: ##@environment Create network and run postgres container.
 	POSTGRES_NAME=${POSTGRES_NAME} \
 	NETWORK_NAME=${NETWORK_NAME} \
-	APP_NAME=$(APP_NAME) \
+	APP_NAME=${APP_NAME} \
 	docker-compose up
 
 env-stop: ##@environment Remove postgres container and remove network.
