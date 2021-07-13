@@ -4,6 +4,7 @@ services:
     app: # service name
         build:
             context: .
+        container_name: ${APP_NAME}
         ports: # mapping ports between host and container
             - "8000:8000" # "host_port:container_port"
         volumes:
@@ -13,7 +14,7 @@ services:
                    python manage.py migrate &&
                    python manage.py runserver 0.0.0.0:8000"
         environment:
-            - DB_HOST=db
+            - DB_HOST=${POSTGRES_NAME}
             - DB_NAME=app
             - DB_USER=postgres
             - DB_PASS=secretPassword
@@ -21,6 +22,9 @@ services:
             - db
     db:
         image: postgres:10-alpine
+        container_name: ${POSTGRES_NAME}
+        ports:
+            - "5438:5432"
         environment:
             - POSTGRES_DB=app
             - POSTGRES_USER=postgres
