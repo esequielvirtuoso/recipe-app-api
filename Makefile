@@ -26,9 +26,15 @@ env-stop: ##@environment Remove postgres container and remove network.
 	docker network rm $(NETWORK_NAME)
 
 lint:
+	POSTGRES_NAME=${POSTGRES_NAME} \
+	NETWORK_NAME=${NETWORK_NAME} \
+	APP_NAME=${APP_NAME} \
 	docker-compose run app sh -c "flake8"
 
 test:
+	POSTGRES_NAME=${POSTGRES_NAME} \
+	NETWORK_NAME=${NETWORK_NAME} \
+	APP_NAME=${APP_NAME} \
 	docker-compose run --rm app sh -c "python manage.py test"
 
 create_core_app:
