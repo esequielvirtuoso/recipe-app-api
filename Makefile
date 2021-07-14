@@ -43,6 +43,9 @@ create_core_app:
 	docker-compose run app sh -c "python manage.py startapp core"
 
 start_core_objects_migration:
+	POSTGRES_NAME=${POSTGRES_NAME} \
+	NETWORK_NAME=${NETWORK_NAME} \
+	APP_NAME=${APP_NAME} \
 	docker-compose run app sh -c "python manage.py makemigrations core"
 
 create_user_app:
