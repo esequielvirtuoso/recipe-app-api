@@ -9,10 +9,7 @@ print_env:
 	@echo $(POSTGRES_NAME)
 
 build:
-	DOCKER_BUILDKIT=1 \
-	docker build --progress=plain \
-		--target=security \
-		--file=Dockerfile .
+	docker-compose build
 
 env: ##@environment Create network and run postgres container.
 	POSTGRES_NAME=${POSTGRES_NAME} \
