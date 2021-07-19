@@ -204,6 +204,62 @@ class PrivateRecipeApiTests(TestCase):
         tags = recipe.tags.all()
         self.assertEqual(len(tags), 0)
 
+    def test_filter_recipes_by_tags(self):
+        """Test returnung recipes with specific tags."""
+        first_recipe = create_sample_recipe(user=self.user,
+                                            title='Thai vegetable curry')
+        second_recipe = create_sample_recipe(user=self.user,
+                                             title='Aubergine with tahini')
+        first_tag = create_sample_tag(user=self.user, name='Vegan')
+        second_tag = create_sample_tag(user=self.user, name='Vegetarian')
+
+        first_recipe.tags.add(first_tag)
+        second_recipe.tags.add(second_tag)
+
+        third_recipe = create_sample_recipe(user=self.user,
+                                            title='Fish and chips')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'tags': f'{first_tag.id},{second_tag.id}'}
+        )
+
+        first_serializer = RecipeSerializer(first_recipe)
+        second_serializer = RecipeSerializer(second_recipe)
+        third_serializer = RecipeSerializer(third_recipe)
+        self.assertIn(first_serializer.data, res.data)
+        self.assertIn(second_serializer.data, res.data)
+        self.assertNotIn(third_serializer.data, res.data)
+
+    def test_filter_recipes_by_ingredients(self):
+        """Test returnung recipes with specific ingredients."""
+        first_recipe = create_sample_recipe(user=self.user,
+                                            title='Posh beans on toast')
+        second_recipe = create_sample_recipe(user=self.user,
+                                             title='Chicken cacciatore')
+        first_ingredient = create_sample_ingredient(user=self.user,
+                                                    name='Feta cheese')
+        second_ingredient = create_sample_ingredient(user=self.user,
+                                                     name='Chicken')
+
+        first_recipe.ingredients.add(first_ingredient)
+        second_recipe.ingredients.add(second_ingredient)
+
+        third_recipe = create_sample_recipe(user=self.user,
+                                            title='Steak and mushrooms')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'ingredients': f'{first_ingredient.id},{second_ingredient.id}'}
+        )
+
+        first_serializer = RecipeSerializer(first_recipe)
+        second_serializer = RecipeSerializer(second_recipe)
+        third_serializer = RecipeSerializer(third_recipe)
+        self.assertIn(first_serializer.data, res.data)
+        self.assertIn(second_serializer.data, res.data)
+        self.assertNotIn(third_serializer.data, res.data)
+
 
 class RecipeImageUploadTests(TestCase):
 
