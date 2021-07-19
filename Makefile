@@ -9,16 +9,13 @@ print_env:
 	@echo $(POSTGRES_NAME)
 
 build:
-	DOCKER_BUILDKIT=1 \
-	docker build --progress=plain \
-		--target=security \
-		--file=Dockerfile .
+	docker-compose build
 
 env: ##@environment Create network and run postgres container.
 	POSTGRES_NAME=${POSTGRES_NAME} \
 	NETWORK_NAME=${NETWORK_NAME} \
 	APP_NAME=${APP_NAME} \
-	docker-compose up
+	docker-compose up -d
 
 env-stop: ##@environment Remove postgres container and remove network.
 	POSTGRES_NAME=${POSTGRES_NAME} NETWORK_NAME=${NETWORK_NAME} docker-compose kill
@@ -37,11 +34,25 @@ test:
 	APP_NAME=${APP_NAME} \
 	docker-compose run --rm app sh -c "python manage.py test"
 
+# commands used for creating apps
+# the migration, admin, and models will be placed only on core app
 create_core_app:
 	docker-compose run app sh -c "python manage.py startapp core"
 
 start_core_objects_migration:
+	POSTGRES_NAME=${POSTGRES_NAME} \
+	NETWORK_NAME=${NETWORK_NAME} \
+	APP_NAME=${APP_NAME} \
 	docker-compose run app sh -c "python manage.py makemigrations core"
 
 create_user_app:
 	docker-compose run --rm app sh -c "python manage.py startapp user"
+
+create_recipe_app:
+	docker-compose run --rm app sh -c "python manage.py startapp recipe"
+
+migrations:
+	POSTGRES_NAME=${POSTGRES_NAME} \
+	NETWORK_NAME=${NETWORK_NAME} \
+	APP_NAME=${APP_NAME} \
+	docker-compose run app sh -c "python manage.py makemigrations"
